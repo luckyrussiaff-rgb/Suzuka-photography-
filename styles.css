@@ -16,3 +16,34 @@ footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted);font-s
 .lightbox{position:fixed;inset:0;background:#000e;display:none;align-items:center;justify-content:center;padding:25px;z-index:20}.lightbox.open{display:flex}.lightbox img,.lightbox video{max-width:min(1100px,95vw);max-height:85vh}.lightbox button{position:absolute;top:20px;right:24px;background:none;border:1px solid #aaa;color:white;padding:10px 14px}
 @media(max-width:760px){header.nav{height:76px}.wordmark{font-size:23px}.logo-link img{width:47px;height:47px}.menu-toggle{display:block}nav{display:none;position:absolute;top:76px;left:0;right:0;background:#0d0e0f;padding:22px;z-index:10;border-bottom:1px solid var(--line);flex-direction:column;align-items:flex-start}nav.open{display:flex}.hero{min-height:650px}.section{padding:65px 0}.split,.contact-grid{grid-template-columns:1fr;gap:28px}.cards{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:1fr 1fr}.item,.item img,.item video{min-height:210px}.cta-band{display:block}.cta-band .btn{margin-top:12px}}
 @media(max-width:480px){.wrap{width:calc(100% - 30px)}.gallery,.cards{grid-template-columns:1fr}.hero h1{font-size:72px}.page-hero{padding:80px 0 55px}}
+
+/* MERAKI FILM — cinematic depth & motion system */
+:root{--motion-ease:cubic-bezier(.2,.75,.25,1)}
+body{overflow-x:hidden;background-image:radial-gradient(ellipse at 15% 8%,rgba(199,168,117,.075),transparent 34%),radial-gradient(ellipse at 88% 38%,rgba(85,103,130,.07),transparent 32%)}
+.hero,.page-hero{position:relative;isolation:isolate;overflow:hidden;background-attachment:fixed}
+.hero:before,.page-hero:before{content:"";position:absolute;z-index:-1;width:min(43vw,560px);aspect-ratio:1;border:1px solid rgba(238,220,184,.25);border-radius:50%;right:8%;top:12%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.14),rgba(199,168,117,.055) 28%,rgba(0,0,0,.12) 62%,rgba(0,0,0,.48));box-shadow:inset 0 0 70px rgba(255,255,255,.06),0 25px 100px #0008;transform:perspective(900px) rotateY(-22deg) rotateX(12deg);animation:lensFloat 9s ease-in-out infinite;pointer-events:none}
+.hero:after,.page-hero:after{content:"";position:absolute;z-index:-1;inset:-20%;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.055) 48%,transparent 58%);transform:translateX(-65%) rotate(8deg);animation:lightSweep 12s ease-in-out infinite;pointer-events:none}
+.hero>.wrap,.page-hero>.wrap{position:relative;z-index:1;transform-style:preserve-3d;animation:heroEnter 1.15s var(--motion-ease) both}
+.hero h1,.page-hero h1{text-shadow:0 12px 38px #0009;transform:translateZ(42px)}
+.hero .eyebrow,.page-hero .eyebrow{animation:fadeUp .9s .15s both}
+.hero p{animation:fadeUp .9s .32s both}
+.hero-actions{animation:fadeUp .9s .48s both}
+.logo-link img,.footer-brand img{box-shadow:0 0 0 1px rgba(199,168,117,.35),0 8px 30px #0008;transition:transform .6s var(--motion-ease),box-shadow .6s}
+.logo-link:hover img{transform:rotateY(18deg) rotateX(-8deg) scale(1.06);box-shadow:0 12px 38px #000b,0 0 25px #c7a87533}
+.service-card,.item,.visual,.contact-box{transform-style:preserve-3d;transition:transform .55s var(--motion-ease),border-color .4s,box-shadow .55s;will-change:transform}
+.service-card:hover{transform:perspective(900px) rotateX(5deg) rotateY(-5deg) translateY(-9px);border-color:#9c825c;box-shadow:18px 24px 55px #0008}
+.item{box-shadow:0 12px 28px #0003}
+.item:hover{transform:perspective(900px) rotateX(2deg) rotateY(-2deg) translateY(-7px);box-shadow:0 24px 55px #0009;border-color:#9c825c}
+.item img,.item video{backface-visibility:hidden}
+.visual{box-shadow:18px 22px 55px #0008;transform:perspective(1000px) rotateY(-5deg) rotateX(2deg)}
+.visual:hover{transform:perspective(1000px) rotateY(0) rotateX(0) translateY(-5px)}
+.btn,.nav-cta,.filter{transition:transform .3s var(--motion-ease),background .3s,border-color .3s,color .3s,box-shadow .3s}
+.btn:hover,.nav-cta:hover{transform:translateY(-3px);box-shadow:0 10px 28px #c7a8752b}
+.reveal{opacity:0;transform:translateY(32px) scale(.985);transition:opacity .85s var(--motion-ease),transform .85s var(--motion-ease)}
+.reveal.is-visible{opacity:1;transform:translateY(0) scale(1)}
+@keyframes lensFloat{0%,100%{transform:perspective(900px) rotateY(-22deg) rotateX(12deg) translate3d(0,0,0)}50%{transform:perspective(900px) rotateY(-12deg) rotateX(5deg) translate3d(-10px,-20px,0)}}
+@keyframes lightSweep{0%,35%{transform:translateX(-75%) rotate(8deg);opacity:0}55%{opacity:1}85%,100%{transform:translateX(75%) rotate(8deg);opacity:0}}
+@keyframes heroEnter{from{opacity:0;transform:translateY(28px) translateZ(-50px)}to{opacity:1;transform:translateY(0) translateZ(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){.hero,.page-hero{background-attachment:scroll}.hero:before,.page-hero:before{width:72vw;right:-20%;top:8%;opacity:.65}.service-card:hover,.item:hover{transform:translateY(-4px)}.visual{transform:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}

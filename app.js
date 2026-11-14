@@ -12,3 +12,10 @@ const draw=()=>{root.innerHTML='';let shown=selected==='All'?items:items.filter(
 const filterRoot=$(filterId);if(filterRoot){filterRoot.innerHTML='';cats.forEach(c=>{const b=document.createElement('button');b.className='filter'+(c===selected?' active':'');b.textContent=c;b.onclick=()=>{selected=c;filterRoot.querySelectorAll('button').forEach(v=>v.classList.toggle('active',v===b));draw()};filterRoot.append(b)})}draw()}
 applySettings();loadGallery('gallery','filters',false);loadGallery('featuredGallery',null,true);
 const form=$('bookingForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);const subject=encodeURIComponent('Photography enquiry — Meraki Film');const body=encodeURIComponent(`Name: ${d.get('name')}\nEmail: ${d.get('email')}\nService: ${d.get('service')}\nDate / location: ${d.get('date')}\nMessage: ${d.get('message')}`);location.href=`mailto:themerakifilm@gmail.com?subject=${subject}&body=${body}`});
+
+
+// Cinematic motion: scroll reveals, subtle pointer depth and gallery card tilt.
+const revealTargets=document.querySelectorAll('.section,.cta-band,.service-card,.contact-box,.visual,.gallery .item');
+revealTargets.forEach((el,i)=>{el.classList.add('reveal');el.style.transitionDelay=(i%3)*70+'ms'});
+if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{threshold:.12});revealTargets.forEach(el=>observer.observe(el))}else revealTargets.forEach(el=>el.classList.add('is-visible'));
+if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){document.querySelectorAll('.service-card,.gallery .item,.contact-box').forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(900px) rotateX(${(-y*5).toFixed(2)}deg) rotateY(${(x*6).toFixed(2)}deg) translateY(-4px)`});card.addEventListener('pointerleave',()=>card.style.transform='')});}
