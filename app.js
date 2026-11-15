@@ -1,5 +1,5 @@
 import {createClient} from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-const SUPABASE_URL='https://kzvsghucgoncxdlygjl.supabase.co';
+const SUPABASE_URL='https://kzvsghucgoncxdxlygjl.supabase.co';
 const SUPABASE_ANON_KEY='sb_publishable_E-mfJsuT7VrzabPisRpyuQ_eMS63VVo';
 const db=createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const $=id=>document.getElementById(id);
