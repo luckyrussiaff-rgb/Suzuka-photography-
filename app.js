@@ -11,30 +11,37 @@ async function applySettings(){const s=await getSettings();if(s.tagline&&$('tagl
 let galleryItems = [];
 let currentImageIndex = 0;
 
+
+
 function createLightbox() {
   if (document.getElementById('merakiLightbox')) return;
 
-  const box = document.createElement('div');
+  const box = document.createElement('dialog');
   box.id = 'merakiLightbox';
+
   box.innerHTML = `
     <button class="lb-close" aria-label="Close">×</button>
-    <button class="lb-prev" aria-label="Previous">❮</button>
+    <button class="lb-prev" aria-label="Previous">‹</button>
     <div class="lb-content"></div>
-    <button class="lb-next" aria-label="Next">❯</button>
+    <button class="lb-next" aria-label="Next">›</button>
     <div class="lb-caption"></div>
+    <div class="lb-count"></div>
   `;
+
   document.body.append(box);
 
   box.querySelector('.lb-close').onclick = closeLightbox;
-  box.querySelector('.lb-prev').onclick = () => showLightbox(currentImageIndex - 1);
-  box.querySelector('.lb-next').onclick = () => showLightbox(currentImageIndex + 1);
+  box.querySelector('.lb-prev').onclick = () =>
+    showLightbox(currentImageIndex - 1);
+  box.querySelector('.lb-next').onclick = () =>
+    showLightbox(currentImageIndex + 1);
 
-  box.addEventListener('click', e => {
-    if (e.target === box) closeLightbox();
+  box.addEventListener('close', () => {
+    box.querySelector('.lb-content').innerHTML = '';
   });
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeLightbox();
+    if (!box.open) return;
     if (e.key === 'ArrowRight') showLightbox(currentImageIndex + 1);
     if (e.key === 'ArrowLeft') showLightbox(currentImageIndex - 1);
   });
@@ -43,7 +50,9 @@ function createLightbox() {
 function showLightbox(index) {
   if (!galleryItems.length) return;
 
-  currentImageIndex = (index + galleryItems.length) % galleryItems.length;
+  currentImageIndex =
+    (index + galleryItems.length) % galleryItems.length;
+
   const item = galleryItems[currentImageIndex];
   const box = document.getElementById('merakiLightbox');
   const content = box.querySelector('.lb-content');
@@ -54,30 +63,46 @@ function showLightbox(index) {
     const video = document.createElement('video');
     video.src = item.public_url;
     video.controls = true;
-    video.autoplay = true;
     video.playsInline = true;
+    video.autoplay = true;
     content.append(video);
   } else {
     const img = document.createElement('img');
     img.src = item.public_url;
     img.alt = item.title || '';
+    img.draggable = false;
+
+    let startX = 0;
+
+    img.addEventListener('touchstart', e => {
+      startX = e.changedTouches[0].clientX;
+    }, { passive: true });
+
+    img.addEventListener('touchend', e => {
+      const diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) < 55) return;
+
+      if (diff < 0) showLightbox(currentImageIndex + 1);
+      else showLightbox(currentImageIndex - 1);
+    }, { passive: true });
+
     content.append(img);
   }
 
   box.querySelector('.lb-caption').textContent =
-    (item.title || '') + ' · ' + (item.category || '');
+    item.title || item.category || '';
 
-  box.classList.add('open');
-  document.body.style.overflow = 'hidden';
+  box.querySelector('.lb-count').textContent =
+    `${currentImageIndex + 1} / ${galleryItems.length}`;
+
+  if (!box.open) box.showModal();
 }
 
 function closeLightbox() {
   const box = document.getElementById('merakiLightbox');
-  if (!box) return;
-  box.classList.remove('open');
-  box.querySelector('.lb-content').innerHTML = '';
-  document.body.style.overflow = '';
+  if (box && box.open) box.close();
 }
+
 
 async function loadGallery(targetId, filterId, featured = false) {
   const root = $(targetId);
