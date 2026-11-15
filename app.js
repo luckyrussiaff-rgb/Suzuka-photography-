@@ -161,10 +161,18 @@ async function loadGallery(targetId, filterId, featured = false) {
         card.append(cap);
       }
 
-      card.addEventListener('click', () => {
-        const index = galleryItems.indexOf(x);
-        showLightbox(index);
-      });
+      card.addEventListener('click', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const index = galleryItems.findIndex(
+    item => item.public_url === x.public_url
+  );
+
+  if (index !== -1) {
+    showLightbox(index);
+  }
+});
 
       root.append(card);
     });
