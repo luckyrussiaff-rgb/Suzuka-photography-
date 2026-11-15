@@ -47,73 +47,147 @@ body{overflow-x:hidden;background-image:radial-gradient(ellipse at 15% 8%,rgba(1
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:760px){.hero,.page-hero{background-attachment:scroll}.hero:before,.page-hero:before{width:72vw;right:-20%;top:8%;opacity:.65}.service-card:hover,.item:hover{transform:translateY(-4px)}.visual{transform:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+/* MERAKI FILM - PREMIUM FULLSCREEN LIGHTBOX */
 
-/* MERAKI FILM - FIXED LIGHTBOX */
 #merakiLightbox {
-  display: none !important;
   position: fixed !important;
   inset: 0 !important;
   width: 100vw !important;
+  height: 100vh !important;
   height: 100dvh !important;
-  z-index: 999999 !important;
-  background: rgba(0,0,0,.97) !important;
-  align-items: center !important;
-  justify-content: center !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: #080808 !important;
+  color: white !important;
   overflow: hidden !important;
+  box-sizing: border-box !important;
 }
 
-#merakiLightbox.open {
+#merakiLightbox[open] {
   display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#merakiLightbox::backdrop {
+  background: #080808;
 }
 
 #merakiLightbox .lb-content {
-  width: 100% !important;
-  height: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 55px 55px !important;
-  box-sizing: border-box !important;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 55px 65px 65px;
+  box-sizing: border-box;
+  touch-action: pan-y;
 }
 
 #merakiLightbox .lb-content img,
 #merakiLightbox .lb-content video {
-  display: block !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  width: auto !important;
-  height: auto !important;
-  object-fit: contain !important;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
 }
 
 #merakiLightbox button {
-  position: absolute !important;
-  z-index: 2 !important;
-  color: white !important;
-  background: #222 !important;
-  border: 1px solid #777 !important;
-  border-radius: 50% !important;
-  width: 44px !important;
-  height: 44px !important;
-  font-size: 24px !important;
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid rgba(199,168,117,.75);
+  border-radius: 50%;
+  background: rgba(15,15,15,.82);
+  color: #d7bd8b;
+  font-size: 30px;
+  cursor: pointer;
+  transition: background .25s, transform .25s;
+}
+
+#merakiLightbox button:hover {
+  background: #c7a875;
+  color: #080808;
+  transform: scale(1.08);
 }
 
 #merakiLightbox .lb-close {
-  top: 15px !important;
-  right: 15px !important;
+  top: 18px;
+  right: 18px;
+  font-size: 29px;
 }
 
 #merakiLightbox .lb-prev {
-  left: 8px !important;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 #merakiLightbox .lb-next {
-  right: 8px !important;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 #merakiLightbox .lb-caption {
-  position: absolute !important;
-  bottom: 12px !important;
-  color: white !important;
-  text-align: center !important;
+  position: absolute;
+  bottom: 18px;
+  left: 65px;
+  right: 65px;
+  color: #e8dfd1;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: .12em;
+  pointer-events: none;
+}
+
+#merakiLightbox .lb-count {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  color: #d7bd8b;
+  font-size: 12px;
+}
+
+@media(max-width:600px) {
+  #merakiLightbox .lb-content {
+    padding: 55px 48px 65px;
+  }
+
+  #merakiLightbox button {
+    width: 40px;
+    height: 40px;
+    font-size: 26px;
+  }
+
+  #merakiLightbox .lb-close {
+    top: 14px;
+    right: 14px;
+  }
+
+  #merakiLightbox .lb-prev {
+    left: 8px;
+  }
+
+  #merakiLightbox .lb-next {
+    right: 8px;
+  }
+
+  #merakiLightbox .lb-caption {
+    bottom: 18px;
+    left: 12px;
+    right: 55px;
+    font-size: 10px;
+  }
 }
